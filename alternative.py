@@ -28,8 +28,6 @@ def get_credentials():
     return default_path
 
 
-# get_credentials()
-
 path = get_credentials()
 
 
@@ -54,9 +52,6 @@ def default_folder_query():
     return user_answer
 
 
-# default_folder_query()
-
-
 def create_directories(folder):
     for folder in folder:
         ensure_directory_exists(os.path.join(path, folder))
@@ -64,13 +59,18 @@ def create_directories(folder):
 
 def ensure_directory_exists(folder):
     os.makedirs(os.path.join(path, folder), exist_ok=True)
-    # for folder in folders:
-    #     try:
-    #
-    #     except FileExistsError:
-    #         continue
 
-        # os.makedirs(folder)
+
+def greeting():
+    name = os.getlogin()
+    print(f'Hello {name}, let\'s get organized!')
+
+
+def main_loop():
+    running = True
+    while running:
+
+
 
 # def filter_files_based_on_extension(directory, extensions):
 #     return [file for file in os.listdir(directory) if file.lower().endswith(extensions)]
