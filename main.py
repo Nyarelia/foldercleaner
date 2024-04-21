@@ -1,19 +1,15 @@
 import os
 import shutil
 
-IMG_FOLDER = 'Images/'
-VID_FOLDER = 'Videos/'
-COMPR_FOLDER = 'Compressed/'
-EXEC_FOLDER = 'Executables/'
-MISC_FOLDER = 'Miscellaneous/'
-
-extensions = {
+# Directories
+FOLDERS = {
     'Images': ['.jpg', '.jpeg', '.png', '.gif'],
     'Videos': ['.mp4', '.avi', '.mov', '.webm', '.mpg'],
     'Executables': ['.exe', '.msi'],
-    'Compressed': ['.zip', 'rar', '7z'],
-    'Torrents': ['.torrent']
+    'Compressed': ['.zip', '.rar', '7z']
 }
+
+MISC_FOLDER = 'Miscellaneous/'
 
 
 def ensure_directory_exists(folder):
@@ -45,18 +41,39 @@ def move_files(files, start_directory, sub_folder):
 path = get_credentials()
 
 
+def move_to_misc(start_directory, valid_extensions, sub_folder):
+    for filename in os.listdir(start_directory):
+        # Skip if filename is a key in FOLDERS dictionary
+        if filename in FOLDERS.keys():
+            continue
+        _, ext = os.path.splitext(filename)
+        if ext not in valid_extensions and os.path.isfile(os.path.join(start_directory, filename)):
+            shutil.move(
+                os.path.join(start_directory, filename),
+                os.path.join(start_directory, sub_folder, filename)
+            )
+
+
 def main_loop():
     greeting()
-    files_left = True
-    while files_left:
-        for key in extensions:
-            if not os.path.exists(os.path.join(path, key)):
-                ensure_directory_exists(os.path.join(path, key))
-            for value in extensions[key]:
-                move_files(filter_files_based_on_extension(path, value), path, key)
-        files_left = False
+
+    # Ensure directories exist
+    for key in FOLDERS.keys():
+        ensure_directory_exists(os.path.join(path, key))
+
+    ensure_directory_exists(os.path.join(path, MISC_FOLDER))
+
+    # List all valid extensions
+    valid_extensions = [ext for extensions in FOLDERS.values() for ext in extensions]
+
+    # Move files to respective directories
+    for folder, extensions in FOLDERS.items():
+        for extension in extensions:
+            files_to_move = filter_files_based_on_extension(path, extension)
+            move_files(files_to_move, path, folder)
+
+    # Move remaining files to Miscellaneous directory
+    move_to_misc(path, valid_extensions, MISC_FOLDER)
 
 
 main_loop()
-
-
