@@ -28,7 +28,6 @@ def get_credentials():
     return default_path
 
 
-path = get_credentials()
 
 
 def check_for_duplicates(existing_file):
@@ -66,21 +65,27 @@ def greeting():
     print(f'Hello {name}, let\'s get organized!')
 
 
+def filter_files_based_on_extension(directory, extensions):
+    return [file for file in os.listdir(directory) if file.lower().endswith(extensions)]
+
+def move_files(files, start_directory, destination, sub_folder):
+    for file in files:
+        old_path = path
+        new_path = os.path.join(path, sub_folder, file)
+        shutil.move(old_path, new_path)
+
+path = get_credentials()
+
 def main_loop():
-    running = True
-    while running:
+    greeting()
+    files_left = True
+    while files_left:
 
 
 
-# def filter_files_based_on_extension(directory, extensions):
-#     return [file for file in os.listdir(directory) if file.lower().endswith(extensions)]
-#
-#
-# def move_files(files, start_directory, destination, sub_folder):
-#     for file in files:
-#         old_path = default_path
-#         new_path = os.path.join(destination, sub_folder, file)
-#         shutil.move(old_path, new_path)
+
+main_loop()
+
 #
 #
 #
