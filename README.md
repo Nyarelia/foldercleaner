@@ -1,1 +1,1 @@
-## Basic default browser downloads folder cleaner.
+## Basic win10 default downloads folder cleaner.
